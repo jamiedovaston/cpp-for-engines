@@ -5,6 +5,8 @@
 #include "GameFramework/Actor.h"
 #include "FirstActor.generated.h"
 
+class UArrowComponent;
+
 UCLASS(Abstract)
 class PROJECT_API AFirstActor : public AActor
 {
@@ -18,4 +20,6 @@ protected:
 	TObjectPtr<USceneComponent> _Root;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> _Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UArrowComponent> _Arrow;
 };
