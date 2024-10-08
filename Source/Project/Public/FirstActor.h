@@ -15,7 +15,6 @@ class PROJECT_API AFirstActor : public AActor
 
 public:
 	AFirstActor();
-
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite);
 	TObjectPtr<UBoxComponent> _Collider;
@@ -27,4 +26,5 @@ protected:
 	UFUNCTION()
 	void Handle_ColliderHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		FVector NormalImpulse, const FHitResult& Hit);
+
 };

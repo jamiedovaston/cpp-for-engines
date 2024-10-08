@@ -24,4 +24,3 @@ void AFirstActor::Handle_ColliderHit(UPrimitiveComponent* HitComponent, AActor* 
 	UE_LOG(LogTemp,Display,TEXT("HIIIIIIIIIIIIIIIIIIIIIITTTTTTTTTTTTTTTTTTTT"));
 	//UGameplayStatics::ApplyDamage(this, 10.f, nullptr, this, UDamageType::StaticClass());
 }
-
