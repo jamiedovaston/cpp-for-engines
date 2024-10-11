@@ -15,6 +15,8 @@ class PROJECT_API AP_FPS : public ACharacter, public IInputable
 	
 public:
 	AP_FPS();
+
+	virtual void BeginPlay() override;
 	
 	virtual void Input_FirePressed_Implementation() override;
 	virtual void Input_FireReleased_Implementation() override;
@@ -33,4 +35,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
+
+private:
+	UFUNCTION()
+	void Handle_HealthDead(AController* causer);
+	UFUNCTION()
+	void Handle_HealthDamaged(float currentHealth, float maxHealth, float change);
 };

@@ -13,6 +13,14 @@ AP_FPS::AP_FPS()
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 }
 
+void AP_FPS::BeginPlay()
+{
+	Super::BeginPlay();
+
+	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
+	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::AP_FPS::Handle_HealthDead);
+}
+
 void AP_FPS::Input_FirePressed_Implementation()
 {
 	//TODO: Make gun go bang
@@ -49,4 +57,14 @@ void AP_FPS::Input_Move_Implementation(FVector2D value)
 UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 {
 	return _InputMapping;
+}
+
+void AP_FPS::Handle_HealthDead(AController* causer)
+{
+	
+}
+
+void AP_FPS::Handle_HealthDamaged(float currentHealth, float maxHealth, float change)
+{
+	
 }
