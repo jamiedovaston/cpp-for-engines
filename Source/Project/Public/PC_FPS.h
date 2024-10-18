@@ -4,6 +4,7 @@
 #include "GameFramework/PlayerController.h"
 #include "PC_FPS.generated.h"
 
+class UWidget_HUD;
 struct FInputActionValue;
 class UInputAction;
 
@@ -12,7 +13,7 @@ class PROJECT_API APC_FPS : public APlayerController
 {
 	GENERATED_BODY()
 
-protected:
+protected: // INPUT
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _LookAction;
 	
@@ -38,4 +39,13 @@ protected:
 	void FireReleased();
 
 	virtual void OnPossess(APawn* InPawn) override;
+	
+protected: // UI
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UWidget_HUD> _HUDWidgetClass;
+	TObjectPtr<UWidget_HUD> _HUDWidget;
+ 
+	virtual void BeginPlay() override;
+
+	void Handle_HealthDamaged(float currentHealth, float maxHealth, float change);
 };

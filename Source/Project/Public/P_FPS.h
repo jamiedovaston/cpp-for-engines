@@ -1,15 +1,17 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "Healthable.h"
 #include "Inputable.h"
 #include "GameFramework/Character.h"
 #include "P_FPS.generated.h"
 
 class UHealthComponent;
 class UCameraComponent;
+class AWeapon_Base;
 
 UCLASS(Abstract)
-class PROJECT_API AP_FPS : public ACharacter, public IInputable
+class PROJECT_API AP_FPS : public ACharacter, public IInputable, public IHealthable
 {
 	GENERATED_BODY()
 	

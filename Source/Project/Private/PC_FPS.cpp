@@ -3,7 +3,11 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Inputable.h"
+#include "P_FPS.h"
 #include "Kismet/KismetSystemLibrary.h"
+
+#include "Widget_HUD.h"
+#include "Blueprint/UserWidget.h"
 
 void APC_FPS::SetupInputComponent()
 {
@@ -105,4 +109,20 @@ void APC_FPS::OnPossess(APawn* InPawn)
 			subsystem->AddMappingContext(IInputable::Execute_GetMappingContext(InPawn), 0);
 		}
 	}
+}
+
+void APC_FPS::BeginPlay()
+{
+	Super::BeginPlay();
+ 
+	if(_HUDWidgetClass)
+	{
+		_HUDWidget = CreateWidget<UWidget_HUD, APC_FPS*>( this, _HUDWidgetClass.Get());
+		_HUDWidget->AddToViewport();
+	}
+}
+
+void APC_FPS::Handle_HealthDamaged(float currentHealth, float maxHealth, float change)
+{
+	
 }
