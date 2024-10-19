@@ -8,6 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthDeadSignature, AController*, causer);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHealthDamagedSignature, float, newHealth, float, maxHealth, float, change);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChangePercentageSignature, float, inPercent);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PROJECT_API UHealthComponent : public UActorComponent
@@ -21,6 +22,11 @@ public:
 	FHealthDeadSignature OnDead;
 	UPROPERTY(BlueprintAssignable)
 	FHealthDamagedSignature OnDamaged;
+	UPROPERTY(BlueprintAssignable)
+	FHealthChangePercentageSignature OnHealthChangePercentage;
+
+	UFUNCTION()
+	void UpdateBar() const;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -34,6 +40,4 @@ private:
 	UFUNCTION()
 	void DamageTaken(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
 		class AController* InstigatedBy, AActor* DamageCauser);
-	UFUNCTION()
-	void HealthUpdated();
 };

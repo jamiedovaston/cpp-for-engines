@@ -5,6 +5,7 @@
 #include "TargetComponent.generated.h"
 
 class UHealthComponent;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTargetRegisteredSignature, UTargetComponent*, target);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FTargetDestroyedSignature, UTargetComponent*, target, AController*, causer, int, targetValue);
 

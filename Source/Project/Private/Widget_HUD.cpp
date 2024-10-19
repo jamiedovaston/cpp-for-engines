@@ -11,8 +11,6 @@ void UWidget_HUD::NativeConstruct()
 	if(HealthBar) { HealthBar->SetPercent(0.f); }
  
 	if(ScoreText) { ScoreText->SetText(FText::FromString("Score: 0")); }
-	
-	UHealthComponent::OnHealthChangePercentage.AddUniqueDynamic(this, &UWidget_HUD::UpdateHealth);
 }
  
 void UWidget_HUD::UpdateHealth(float newHealthRatio)

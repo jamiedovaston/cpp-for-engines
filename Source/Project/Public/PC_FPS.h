@@ -47,5 +47,6 @@ protected: // UI
  
 	virtual void BeginPlay() override;
 
-	void Handle_HealthDamaged(float currentHealth, float maxHealth, float change);
+	UFUNCTION()
+	void Handle_HealthChangePercentage(float InPercent);
 };

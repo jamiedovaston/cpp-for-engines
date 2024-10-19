@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "Healthable.h"
 #include "Inputable.h"
 #include "GameFramework/Character.h"
 #include "P_FPS.generated.h"
@@ -10,8 +9,10 @@ class UHealthComponent;
 class UCameraComponent;
 class AWeapon_Base;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChangedPercentageSignature, float, InPercent);
+
 UCLASS(Abstract)
-class PROJECT_API AP_FPS : public ACharacter, public IInputable, public IHealthable
+class PROJECT_API AP_FPS : public ACharacter, public IInputable
 {
 	GENERATED_BODY()
 	
@@ -26,8 +27,14 @@ public:
 	virtual void Input_JumpReleased_Implementation() override;
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
-	
+
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
+
+	UPROPERTY(BlueprintAssignable)
+	FHealthChangedPercentageSignature OnHealthChangePercentage;
+
+	UFUNCTION()
+	void Handle_OnPossessed();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -46,6 +53,8 @@ protected:
 	TObjectPtr<AWeapon_Base> _WeaponRef;
 
 private:
+	UFUNCTION()
+	virtual void Handle_HealthChangePercentage(float inPercent);
 	UFUNCTION()
 	void Handle_HealthDead(AController* causer);
 	UFUNCTION()

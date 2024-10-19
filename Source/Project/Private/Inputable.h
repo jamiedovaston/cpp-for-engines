@@ -34,5 +34,8 @@ public:
 	void Input_FireReleased();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_DamagePressed();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
 };

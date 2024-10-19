@@ -109,6 +109,13 @@ void APC_FPS::OnPossess(APawn* InPawn)
 			subsystem->AddMappingContext(IInputable::Execute_GetMappingContext(InPawn), 0);
 		}
 	}
+	
+	if(AP_FPS* pawn = Cast<AP_FPS>(InPawn))
+	{
+		UE_LOG(LogTemp, Display, TEXT("Pawn possessed! ----------------------------------------------------------------------"));
+		pawn->OnHealthChangePercentage.AddUniqueDynamic(this, &APC_FPS::Handle_HealthChangePercentage);
+		pawn->Handle_OnPossessed();
+	}
 }
 
 void APC_FPS::BeginPlay()
@@ -122,7 +129,7 @@ void APC_FPS::BeginPlay()
 	}
 }
 
-void APC_FPS::Handle_HealthDamaged(float currentHealth, float maxHealth, float change)
+void APC_FPS::Handle_HealthChangePercentage(float InPercent)
 {
-	
+	_HUDWidget->UpdateHealth(InPercent);
 }

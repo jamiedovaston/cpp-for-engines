@@ -3,6 +3,7 @@
 #include "HealthComponent.h"
 #include "Weapon_Base.h"
 #include "Camera/CameraComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AP_FPS::AP_FPS()
 {
@@ -23,11 +24,7 @@ void AP_FPS::BeginPlay()
 
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
 	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::AP_FPS::Handle_HealthDead);
-	
-	Super::BeginPlay();
- 
-	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
-	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDead);
+	_Health->OnHealthChangePercentage.AddUniqueDynamic(this, &AP_FPS::Handle_HealthChangePercentage);
  
 	if(_DefaultWeapon)
 	{
@@ -44,6 +41,7 @@ void AP_FPS::Input_FirePressed_Implementation()
 	if(_WeaponRef)
 	{
 		_WeaponRef->StartFire();
+		UGameplayStatics::ApplyDamage(this, 10.0f, GetInstigatorController(), this, UDamageType::StaticClass());
 	}
 }
 
@@ -81,6 +79,16 @@ void AP_FPS::Input_Move_Implementation(FVector2D value)
 UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 {
 	return _InputMapping;
+}
+
+void AP_FPS::Handle_HealthChangePercentage(float inPercent)
+{
+	OnHealthChangePercentage.Broadcast(inPercent);
+}
+
+void AP_FPS::Handle_OnPossessed()
+{
+	_Health->UpdateBar();
 }
 
 void AP_FPS::Handle_HealthDead(AController* causer)
