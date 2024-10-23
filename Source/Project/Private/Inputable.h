@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "UObject/Interface.h"
 #include "Inputable.generated.h"
 
@@ -38,4 +39,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+    UBehaviorTree* GetBehaviorTree();
 };

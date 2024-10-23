@@ -100,3 +100,8 @@ void AP_FPS::Handle_HealthDamaged(float currentHealth, float maxHealth, float ch
 {
 	
 }
+
+UBehaviorTree* AP_FPS::GetBehaviorTree_Implementation()
+{
+	return _BehaviorTree;
+}

@@ -36,6 +36,9 @@ public:
 	UFUNCTION()
 	void Handle_OnPossessed();
 
+	
+    virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UCameraComponent> _Camera;
@@ -51,6 +54,9 @@ protected:
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<AWeapon_Base> _WeaponRef;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UBehaviorTree> _BehaviorTree;
 
 private:
 	UFUNCTION()
