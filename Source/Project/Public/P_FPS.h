@@ -25,6 +25,8 @@ public:
 	virtual void Input_FireReleased_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
 	virtual void Input_JumpReleased_Implementation() override;
+	virtual void Input_CrouchPressed_Implementation() override;
+	virtual void Input_CrouchReleased_Implementation() override;
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
 

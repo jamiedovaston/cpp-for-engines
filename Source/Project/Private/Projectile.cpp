@@ -32,6 +32,9 @@ void AProjectile::Handle_Hit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 		{
 			OtherComp->AddImpulseAtLocation(GetVelocity() * 100.f, GetActorLocation());   
 		}
+		
+		UE_LOG(LogTemp, Display, TEXT("Hit information: %s hit %s"), *this->GetName(), *OtherActor->GetName())
+		
 		Destroy();
 	}
 }

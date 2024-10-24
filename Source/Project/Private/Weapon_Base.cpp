@@ -6,6 +6,8 @@ AWeapon_Base::AWeapon_Base()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	_FireDelay = 0.f;
+
+	// Get camera component in actor 
  
 	_Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = _Root;

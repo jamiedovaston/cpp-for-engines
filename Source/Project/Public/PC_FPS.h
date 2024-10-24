@@ -24,6 +24,9 @@ protected: // INPUT
 	TObjectPtr<UInputAction> _JumpAction;
 	
 	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _CrouchAction;
+	
+	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _FireAction;
 
 	virtual void SetupInputComponent() override;
@@ -34,6 +37,9 @@ protected: // INPUT
 	
 	void JumpPressed();
 	void JumpReleased();
+
+	void CrouchPressed();
+	void CrouchRelease();
 	
 	void FirePressed();
 	void FireReleased();

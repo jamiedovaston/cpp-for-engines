@@ -3,7 +3,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Weapon_Base.generated.h"
- 
+
+class UCameraComponent;
 class UArrowComponent;
  
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWeaponFireSignature);
@@ -23,6 +24,9 @@ public:
 	void StopFire();
     
 protected:
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<UCameraComponent> _Camera;
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> _Root;
  

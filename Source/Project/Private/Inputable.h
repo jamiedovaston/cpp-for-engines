@@ -28,6 +28,11 @@ public:
 	void Input_JumpPressed();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_JumpReleased();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_CrouchPressed();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_CrouchReleased();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_FirePressed();

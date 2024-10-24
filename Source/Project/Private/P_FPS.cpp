@@ -41,7 +41,6 @@ void AP_FPS::Input_FirePressed_Implementation()
 	if(_WeaponRef)
 	{
 		_WeaponRef->StartFire();
-		UGameplayStatics::ApplyDamage(this, 10.0f, GetInstigatorController(), this, UDamageType::StaticClass());
 	}
 }
 
@@ -61,6 +60,16 @@ void AP_FPS::Input_JumpPressed_Implementation()
 void AP_FPS::Input_JumpReleased_Implementation()
 {
 	ACharacter::StopJumping();
+}
+
+void AP_FPS::Input_CrouchPressed_Implementation()
+{
+	ACharacter::Crouch();
+}
+
+void AP_FPS::Input_CrouchReleased_Implementation()
+{
+	ACharacter::UnCrouch();
 }
 
 void AP_FPS::Input_Look_Implementation(FVector2D value)
