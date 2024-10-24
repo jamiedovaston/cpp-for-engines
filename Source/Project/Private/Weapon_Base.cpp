@@ -6,8 +6,6 @@ AWeapon_Base::AWeapon_Base()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	_FireDelay = 0.f;
-
-	// Get camera component in actor 
  
 	_Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = _Root;
@@ -32,7 +30,12 @@ void AWeapon_Base::StopFire()
 {
 	GetWorld()->GetTimerManager().ClearTimer(_FireDelayTimer);
 }
- 
+
+void AWeapon_Base::Initialise(AActor* _Player, UCameraComponent* camera)
+{
+	_Camera = camera;
+}
+
 void AWeapon_Base::Fire()
 {
 	OnFire.Broadcast();

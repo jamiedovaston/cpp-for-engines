@@ -25,7 +25,7 @@ void AP_FPS::BeginPlay()
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
 	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::AP_FPS::Handle_HealthDead);
 	_Health->OnHealthChangePercentage.AddUniqueDynamic(this, &AP_FPS::Handle_HealthChangePercentage);
- 
+	
 	if(_DefaultWeapon)
 	{
 		FActorSpawnParameters spawnParams;
@@ -33,6 +33,7 @@ void AP_FPS::BeginPlay()
 		spawnParams.Instigator = this;
 		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
 		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+		_WeaponRef->Initialise(this, _Camera);
 	}
 }
 

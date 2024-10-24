@@ -22,6 +22,9 @@ public:
     
 	void StartFire();
 	void StopFire();
+	
+	UFUNCTION()
+	virtual void Initialise(AActor* _Player, UCameraComponent* _Camera);
     
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)

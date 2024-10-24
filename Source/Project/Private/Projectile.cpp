@@ -17,7 +17,7 @@ AProjectile::AProjectile()
 	_ProjectileMovement->MaxSpeed = 3000.f;
 	_ProjectileMovement->bRotationFollowsVelocity = true;
 	_ProjectileMovement->bShouldBounce = true;
- 
+	
 	InitialLifeSpan = 3.f;
 }
  
