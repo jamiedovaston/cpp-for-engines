@@ -41,6 +41,7 @@ void AGM_FPS::Handle_GameRuleCompleted()
 
 void AGM_FPS::Handle_GameRulePointsScored(AController* scorer, int points)
 {
+	
 }
 
 void AGM_FPS::HandleMatchIsWaitingToStart()

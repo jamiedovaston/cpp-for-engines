@@ -40,6 +40,11 @@ public:
 	void Input_FireReleased();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_SprintPressed();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_SprintReleased();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_DamagePressed();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

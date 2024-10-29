@@ -3,6 +3,7 @@
 #include "HealthComponent.h"
 #include "Weapon_Base.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AP_FPS::AP_FPS()
@@ -25,6 +26,9 @@ void AP_FPS::BeginPlay()
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
 	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::AP_FPS::Handle_HealthDead);
 	_Health->OnHealthChangePercentage.AddUniqueDynamic(this, &AP_FPS::Handle_HealthChangePercentage);
+	
+	GetCharacterMovement()->MaxWalkSpeed = _WalkSpeed;
+	_Camera->SetFieldOfView(90);
 	
 	if(_DefaultWeapon)
 	{
@@ -72,6 +76,18 @@ void AP_FPS::Input_CrouchReleased_Implementation()
 {
 	ACharacter::UnCrouch();
 }
+
+void AP_FPS::Input_SprintPressed_Implementation()
+{
+	GetCharacterMovement()->MaxWalkSpeed = _RunSpeed;
+	_Camera->SetFieldOfView(110);
+}
+
+void AP_FPS::Input_SprintReleased_Implementation()
+{
+	GetCharacterMovement()->MaxWalkSpeed = _WalkSpeed;
+	_Camera->SetFieldOfView(90);
+}	
 
 void AP_FPS::Input_Look_Implementation(FVector2D value)
 {

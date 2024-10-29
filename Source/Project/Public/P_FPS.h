@@ -27,6 +27,8 @@ public:
 	virtual void Input_JumpReleased_Implementation() override;
 	virtual void Input_CrouchPressed_Implementation() override;
 	virtual void Input_CrouchReleased_Implementation() override;
+	virtual void Input_SprintPressed_Implementation() override;
+	virtual void Input_SprintReleased_Implementation() override;
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
 
@@ -49,6 +51,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float _WalkSpeed = 600.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float _RunSpeed = 900.0f;
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> _WeaponAttachPoint;
