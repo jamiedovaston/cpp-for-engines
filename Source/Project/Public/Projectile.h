@@ -21,7 +21,7 @@ protected:
  
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UProjectileMovementComponent> _ProjectileMovement;
- 
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _Damage;
  
