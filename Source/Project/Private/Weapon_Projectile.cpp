@@ -15,6 +15,8 @@ void AWeapon_Projectile::Initialise(AActor* _Player, UCameraComponent* _Camera)
 
 void AWeapon_Projectile::Fire()
 {
+	Super::Fire();
+
 	UWorld* const world = GetWorld();
 	if(world == nullptr || _ProjectileClass == nullptr) { return; }
     
@@ -29,18 +31,10 @@ void AWeapon_Projectile::Fire()
 	
 	FRotator projectileRotation; 
 	
-	if(UKismetSystemLibrary::LineTraceSingle(world, start, end,
-	   UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false,
-	   ActorsToIgnore, EDrawDebugTrace::ForDuration, hit, true, FLinearColor::Red,
-	   FLinearColor::Green, 5))
-	{
-		
-	}
+	SingleLineTraceHitResult(hit, world, start,end, ActorsToIgnore);
 	
 	projectileRotation = UKismetMathLibrary::FindLookAtRotation(_Muzzle->GetComponentLocation(), hit.IsValidBlockingHit() ? hit.ImpactPoint : end);
 	FVector projectilePosition = _Muzzle->GetComponentLocation();
 	
 	world->SpawnActor(_ProjectileClass, &projectilePosition, &projectileRotation, spawnParams);
- 
-	Super::Fire();
 }

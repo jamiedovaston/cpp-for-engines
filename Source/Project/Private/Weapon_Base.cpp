@@ -31,6 +31,13 @@ void AWeapon_Base::StopFire()
 	GetWorld()->GetTimerManager().ClearTimer(_FireDelayTimer);
 }
 
+void AWeapon_Base::SingleLineTraceHitResult(FHitResult& OutHit, const UObject* WorldContextObject, const FVector Start, const FVector End, const TArray<AActor*>& ActorsToIgnore)
+{
+	UKismetSystemLibrary::LineTraceSingle(WorldContextObject, Start, End,
+	   UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHit,
+	   true, FLinearColor::Red, FLinearColor::Green, 5);
+}
+
 void AWeapon_Base::Initialise(AActor* _Player, UCameraComponent* camera)
 {
 	_Camera = camera;

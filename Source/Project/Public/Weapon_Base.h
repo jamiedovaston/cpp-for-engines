@@ -2,6 +2,7 @@
  
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Weapon_Base.generated.h"
 
 class UCameraComponent;
@@ -22,6 +23,9 @@ public:
     
 	void StartFire();
 	void StopFire();
+
+	static void SingleLineTraceHitResult(FHitResult& OutHit, const UObject* WorldContextObject,
+		const FVector Start, const FVector End, const TArray<AActor*>& ActorsToIgnore);
 	
 	UFUNCTION()
 	virtual void Initialise(AActor* _Player, UCameraComponent* _Camera);

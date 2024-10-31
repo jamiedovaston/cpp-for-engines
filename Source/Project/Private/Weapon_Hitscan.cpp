@@ -21,17 +21,14 @@ void AWeapon_Hitscan::Fire()
 	FVector start = _Camera->GetComponentLocation();
 	FVector end = start + (_Camera->GetForwardVector() * 1000);
  
-	if(UKismetSystemLibrary::LineTraceSingle(world, start, end,
-	   UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel2), false,
-	   ActorsToIgnore, EDrawDebugTrace::ForDuration, hit, true, FLinearColor::Red,
-	   FLinearColor::Green, 5))
-	{
-		UGameplayStatics::ApplyDamage(hit.GetActor(), _Damage,
-		   GetOwner()->GetInstigatorController(), GetOwner(),
-		   UDamageType::StaticClass());
-        
-		UE_LOG(LogTemp, Display, TEXT("Hit position: %s"), *hit.ImpactPoint.ToString())
-	}
+	SingleLineTraceHitResult(hit, world, start,end, ActorsToIgnore);
+	
+	UGameplayStatics::ApplyDamage(hit.GetActor(), _Damage,
+	   GetOwner()->GetInstigatorController(), GetOwner(),
+	   UDamageType::StaticClass());
+    
+	UE_LOG(LogTemp, Display, TEXT("Hit position: %s"), *hit.ImpactPoint.ToString())
+
  
 	Super::Fire();
 }
