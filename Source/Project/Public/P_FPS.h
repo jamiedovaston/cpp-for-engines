@@ -50,6 +50,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UCameraComponent* ShittyCam;
+
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _WalkSpeed = 600.0f;

@@ -26,8 +26,11 @@ void AP_FPS::BeginPlay()
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
 	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::AP_FPS::Handle_HealthDead);
 	_Health->OnHealthChangePercentage.AddUniqueDynamic(this, &AP_FPS::Handle_HealthChangePercentage);
+
+	//ShittyCam = CastChecked<UCameraComponent>( UGameplayStatics::SpawnObject(UCameraComponent::StaticClass(), this));
 	
 	GetCharacterMovement()->MaxWalkSpeed = _WalkSpeed;
+	_Camera->SetupAttachment(RootComponent);
 	_Camera->SetFieldOfView(90);
 	
 	if(_DefaultWeapon)
