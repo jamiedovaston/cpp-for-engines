@@ -40,7 +40,6 @@ public:
 	UFUNCTION()
 	void Handle_OnPossessed();
 
-	
     virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
 
 protected:
