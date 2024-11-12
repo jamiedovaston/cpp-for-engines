@@ -14,6 +14,10 @@ void AWeapon_Hitscan::Initialise(AActor* _Player, UCameraComponent* _Camera)
 
 void AWeapon_Hitscan::Fire()
 {
+	Super::Fire();
+	
+	if(!CanShoot) return;
+	
 	UWorld* const world = GetWorld();
 	if(world == nullptr) { return; }
  
@@ -28,7 +32,4 @@ void AWeapon_Hitscan::Fire()
 	   UDamageType::StaticClass());
     
 	UE_LOG(LogTemp, Display, TEXT("Hit position: %s"), *hit.ImpactPoint.ToString())
-
- 
-	Super::Fire();
 }

@@ -61,4 +61,7 @@ protected: // UI
 
 	UFUNCTION()
 	void Handle_HealthChangePercentage(float InPercent);
+	
+	UFUNCTION()
+	void Handle_AmmoChangePercentage(float InPercent);
 };

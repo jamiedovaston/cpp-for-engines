@@ -36,6 +36,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FHealthChangedPercentageSignature OnHealthChangePercentage;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<AWeapon_Base> _WeaponRef;
 
 	UFUNCTION()
 	void Handle_OnPossessed();
@@ -60,8 +63,6 @@ protected:
 	TObjectPtr<USceneComponent> _WeaponAttachPoint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<AWeapon_Base> _WeaponRef;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UBehaviorTree> _BehaviorTree;

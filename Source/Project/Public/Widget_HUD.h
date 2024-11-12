@@ -18,11 +18,15 @@ public:
 	UFUNCTION()
 	void UpdateHealth(float newHealthRatio);
 	UFUNCTION()
+	void UpdateAmmo(float newAmmoRatio);
+	UFUNCTION()
 	void UpdateScore(int newScore);
  
 private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UProgressBar> HealthBar;
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UProgressBar> AmmoBar;
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> ScoreText;
 };

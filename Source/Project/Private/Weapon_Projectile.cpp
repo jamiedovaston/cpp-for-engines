@@ -16,6 +16,8 @@ void AWeapon_Projectile::Initialise(AActor* _Player, UCameraComponent* _Camera)
 void AWeapon_Projectile::Fire()
 {
 	Super::Fire();
+	
+	if(!CanShoot) return;
 
 	UWorld* const world = GetWorld();
 	if(world == nullptr || _ProjectileClass == nullptr) { return; }

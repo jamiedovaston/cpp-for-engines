@@ -11,13 +11,20 @@ void UWidget_HUD::NativeConstruct()
 	if(HealthBar) { HealthBar->SetPercent(0.f); }
  
 	if(ScoreText) { ScoreText->SetText(FText::FromString("Score: 0")); }
+
+	if(AmmoBar) { AmmoBar->SetPercent(0.f); }
 }
  
 void UWidget_HUD::UpdateHealth(float newHealthRatio)
 {
 	if(HealthBar) { HealthBar->SetPercent(newHealthRatio); }
 }
- 
+
+void UWidget_HUD::UpdateAmmo(float newAmmoRatio)
+{
+	if(AmmoBar) { AmmoBar->SetPercent(newAmmoRatio); }
+}
+
 void UWidget_HUD::UpdateScore(int newScore)
 {
 	if(ScoreText)

@@ -41,9 +41,32 @@ void AWeapon_Base::SingleLineTraceHitResult(FHitResult& OutHit, const UObject* W
 void AWeapon_Base::Initialise(AActor* _Player, UCameraComponent* camera)
 {
 	_Camera = camera;
+	
+	_CurrentAmmo = _MaxAmmoCount;
+	OnAmmoChanged.Broadcast((float)_CurrentAmmo / (float)_MaxAmmoCount);
+	CanShoot = true;
 }
 
 void AWeapon_Base::Fire()
 {
-	OnFire.Broadcast();
+	if(!CanShoot) return;
+	
+	if(_CurrentAmmo > 0)
+	{
+		OnFire.Broadcast();
+		_CurrentAmmo--;
+		OnAmmoChanged.Broadcast((float)_CurrentAmmo / (float)_MaxAmmoCount);
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().SetTimer(_ReloadDelayTimer, this, &AWeapon_Base::Reload, _ReloadDelay, false);
+		CanShoot = false;
+	}
+}
+
+void AWeapon_Base::Reload()
+{
+	_CurrentAmmo = _MaxAmmoCount;
+	OnAmmoChanged.Broadcast((float)_CurrentAmmo / (float)_MaxAmmoCount);
+	CanShoot = true;
 }

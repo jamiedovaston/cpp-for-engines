@@ -4,6 +4,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Inputable.h"
 #include "P_FPS.h"
+#include "Weapon_Base.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 #include "Widget_HUD.h"
@@ -164,6 +165,7 @@ void APC_FPS::OnPossess(APawn* InPawn)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Pawn possessed! ----------------------------------------------------------------------"));
 		pawn->OnHealthChangePercentage.AddUniqueDynamic(this, &APC_FPS::Handle_HealthChangePercentage);
+		pawn->_WeaponRef.Get()->OnAmmoChanged.AddUniqueDynamic(this, &APC_FPS::Handle_AmmoChangePercentage);
 		pawn->Handle_OnPossessed();
 	}
 }
@@ -182,4 +184,9 @@ void APC_FPS::BeginPlay()
 void APC_FPS::Handle_HealthChangePercentage(float InPercent)
 {
 	_HUDWidget->UpdateHealth(InPercent);
+}
+
+void APC_FPS::Handle_AmmoChangePercentage(float InPercent)
+{
+	_HUDWidget->UpdateAmmo(InPercent);
 }

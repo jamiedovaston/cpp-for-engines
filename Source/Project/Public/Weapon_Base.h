@@ -9,7 +9,8 @@ class UCameraComponent;
 class UArrowComponent;
  
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWeaponFireSignature);
- 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAmmoChangedSignature, float, inPercent);
+
 UCLASS(Abstract)
 class PROJECT_API AWeapon_Base : public AActor
 {
@@ -20,6 +21,9 @@ public:
  
 	UPROPERTY(BlueprintAssignable)
 	FWeaponFireSignature OnFire;
+
+	UPROPERTY(BlueprintAssignable)
+	FAmmoChangedSignature OnAmmoChanged;
     
 	void StartFire();
 	void StopFire();
@@ -46,7 +50,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _FireDelay;
 	FTimerHandle _FireDelayTimer;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int _MaxAmmoCount;
+	int _CurrentAmmo;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _ReloadDelay;
+	FTimerHandle _ReloadDelayTimer;
+
+	bool CanShoot;
  
 	UFUNCTION()
 	virtual void Fire();
+	
+	UFUNCTION()
+	void Reload();
 };
