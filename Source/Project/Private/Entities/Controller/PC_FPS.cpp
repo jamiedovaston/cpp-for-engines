@@ -1,9 +1,10 @@
-﻿#include "PC_FPS.h"
+﻿#include "Entities/Controller/PC_FPS.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Inputable.h"
-#include "P_FPS.h"
+#include "GameRule_Targets.h"
+#include "Interfaces/Inputable/Inputable.h"
+#include "Entities/P_FPS.h"
 #include "Weapon_Base.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -166,8 +167,14 @@ void APC_FPS::OnPossess(APawn* InPawn)
 		UE_LOG(LogTemp, Display, TEXT("Pawn possessed! ----------------------------------------------------------------------"));
 		pawn->OnHealthChangePercentage.AddUniqueDynamic(this, &APC_FPS::Handle_HealthChangePercentage);
 		pawn->_WeaponRef.Get()->OnAmmoChanged.AddUniqueDynamic(this, &APC_FPS::Handle_AmmoChangePercentage);
+		UGameRule_Targets::OnPointsScoredUpdated.AddUniqueDynamic(this, &APC_FPS::Handle_EnemiesRemainingChanged);
 		pawn->Handle_OnPossessed();
 	}
+}
+
+void APC_FPS::Handle_EnemiesRemainingChanged(int _remaining)
+{
+	_HUDWidget->UpdateScore(_remaining);
 }
 
 void APC_FPS::BeginPlay()

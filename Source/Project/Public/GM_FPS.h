@@ -7,6 +7,8 @@
 class UGameRule;
 class UTargetComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEnemiesRemainingSignature, int, _remaining);
+
 UCLASS(Abstract)
 class PROJECT_API AGM_FPS : public AGameMode
 {
@@ -17,6 +19,8 @@ public:
  
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
+	
+	static inline FEnemiesRemainingSignature OnEnemiesRemainingSignature;
  
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Match Management")

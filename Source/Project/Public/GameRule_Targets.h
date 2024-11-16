@@ -7,7 +7,6 @@
 #include "GameRule_Targets.generated.h"
 
 class UTargetComponent;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGRTargetRequestTargetSignature);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PROJECT_API UGameRule_Targets : public UGameRule
@@ -17,19 +16,17 @@ class PROJECT_API UGameRule_Targets : public UGameRule
 public:
 	UGameRule_Targets();
 
-	static inline FGRTargetRequestTargetSignature OnRequestTarget;
 	virtual void Init() override;
 
 protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TArray<TObjectPtr<UTargetComponent>> _Targets;
-
-	int _AmountRemaining;
+	
+	int _AmountRemaining = 0;
 	
 private:
 	UFUNCTION()
 	void Handle_TargetRegistered(UTargetComponent* target);
 	UFUNCTION()
 	void Handle_TargetDestroyed(UTargetComponent* target, AController* causer, int targetValue);
-	
 };

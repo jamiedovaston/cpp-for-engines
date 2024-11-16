@@ -32,7 +32,5 @@ protected:
 
 private:
 	UFUNCTION()
-	void Handle_GameRuleRequestTarget();
-	UFUNCTION()
 	void Handle_HealthDead(AController* causer);
 };

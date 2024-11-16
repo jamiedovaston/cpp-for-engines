@@ -63,5 +63,8 @@ protected: // UI
 	void Handle_HealthChangePercentage(float InPercent);
 	
 	UFUNCTION()
+	void Handle_EnemiesRemainingChanged(int _remaining);
+	
+	UFUNCTION()
 	void Handle_AmmoChangePercentage(float InPercent);
 };

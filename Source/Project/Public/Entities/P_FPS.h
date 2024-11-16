@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "Inputable.h"
+#include "Interfaces/Inputable/Inputable.h"
 #include "GameFramework/Character.h"
 #include "P_FPS.generated.h"
 

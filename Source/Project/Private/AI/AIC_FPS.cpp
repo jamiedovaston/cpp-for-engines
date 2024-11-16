@@ -1,6 +1,6 @@
 ﻿#include "AI/AIC_FPS.h"
  
-#include "Inputable.h"
+#include "Interfaces/Inputable/Inputable.h"
 #include "Kismet/KismetSystemLibrary.h"
  
 AAIC_FPS::AAIC_FPS()

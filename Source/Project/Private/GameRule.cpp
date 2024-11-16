@@ -3,7 +3,6 @@
 UGameRule::UGameRule()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
 }
 
 void UGameRule::Init()
@@ -16,9 +15,9 @@ void UGameRule::BroadcastComplete()
 	OnComplete.Broadcast();
 }
 
-void UGameRule::BroadcastPointsScored(AController* scorer, int points)
+void UGameRule::BroadcastPointsScored(int points)
 {
-	OnPointsScored.Broadcast(scorer, points);
+	OnPointsScoredUpdated.Broadcast(points);
 }
 
 

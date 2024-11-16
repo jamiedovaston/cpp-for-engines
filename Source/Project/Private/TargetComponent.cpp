@@ -10,7 +10,6 @@ UTargetComponent::UTargetComponent()
 	_PointsValue = 1;
 }
 
-
 void UTargetComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -27,20 +26,13 @@ void UTargetComponent::BeginPlay()
 
 	_Health->OnDead.AddUniqueDynamic(this, &UTargetComponent::Handle_HealthDead);
 
-	UGameRule_Targets::OnRequestTarget.AddUniqueDynamic(this, &UTargetComponent::Handle_GameRuleRequestTarget);
-
-	OnTargetRegistered.Broadcast(this);
-}
-
-void UTargetComponent::Handle_GameRuleRequestTarget()
-{
 	OnTargetRegistered.Broadcast(this);
 }
 
 void UTargetComponent::Handle_HealthDead(AController* causer)
 {
 	OnDestroyed.Broadcast(this, causer, _PointsValue);
-	
+
 	GetOwner()->Destroy();
 }
 

@@ -36,12 +36,12 @@ void AGM_FPS::Logout(AController* Exiting)
 
 void AGM_FPS::Handle_GameRuleCompleted()
 {
-	
+	HandleMatchHasEnded();
 }
 
 void AGM_FPS::Handle_GameRulePointsScored(AController* scorer, int points)
 {
-	
+	OnEnemiesRemainingSignature.Broadcast(points);
 }
 
 void AGM_FPS::HandleMatchIsWaitingToStart()
@@ -55,7 +55,6 @@ void AGM_FPS::HandleMatchIsWaitingToStart()
 			_GameRuleManagers.Add(rule);
 			rule->Init(); 
 			rule->OnComplete.AddUniqueDynamic(this, &AGM_FPS::Handle_GameRuleCompleted);
-			rule->OnPointsScored.AddUniqueDynamic(this, &AGM_FPS::Handle_GameRulePointsScored);
 			_GameRulesLeft++;
 		}
 	}
@@ -90,6 +89,7 @@ void AGM_FPS::HandleMatchHasStarted()
 
 void AGM_FPS::HandleMatchHasEnded()
 {
+	UE_LOG(LogTemp, Display, TEXT("MATCH HAS ENDED!"));
 	Super::HandleMatchHasEnded();
 }
 

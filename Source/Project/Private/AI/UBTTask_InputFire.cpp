@@ -1,6 +1,6 @@
 ﻿#include "AI/UBTTask_InputFire.h"
 
-#include "Inputable.h"
+#include "Interfaces/Inputable/Inputable.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
  

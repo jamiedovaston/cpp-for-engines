@@ -29,8 +29,8 @@ void UHealthComponent::DamageTaken(AActor* DamagedActor, float Damage, const UDa
 	const float change = FMath::Min(_CurrentHealth, Damage);
 	_CurrentHealth -= change;
 	OnDamaged.Broadcast(_CurrentHealth, _MaxHealth, change);
-	UHealthComponent::UpdateBar();
-	if(_CurrentHealth == 0.0f)
+	UpdateBar();
+	if(_CurrentHealth <= 0.0f)
 	{
 		OnDead.Broadcast(InstigatedBy);
 	}
