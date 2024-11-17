@@ -36,7 +36,8 @@ void AGM_FPS::Logout(AController* Exiting)
 
 void AGM_FPS::Handle_GameRuleCompleted()
 {
-	HandleMatchHasEnded();
+	UE_LOG(LogTemp, Display, TEXT("Match has ended!"));
+	EndMatch();
 }
 
 void AGM_FPS::Handle_GameRuleValueChanged(AController* scorer, int points)
