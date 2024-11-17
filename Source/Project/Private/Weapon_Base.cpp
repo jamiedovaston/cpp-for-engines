@@ -43,7 +43,7 @@ void AWeapon_Base::Initialise(AActor* _Player, UCameraComponent* camera)
 	_Camera = camera;
 	
 	_CurrentAmmo = _MaxAmmoCount;
-	OnAmmoChanged.Broadcast((float)_CurrentAmmo / (float)_MaxAmmoCount);
+	OnAmmoChanged.Broadcast(1.0f);
 	CanShoot = true;
 }
 

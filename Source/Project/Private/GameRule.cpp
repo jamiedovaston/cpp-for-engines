@@ -15,9 +15,9 @@ void UGameRule::BroadcastComplete()
 	OnComplete.Broadcast();
 }
 
-void UGameRule::BroadcastPointsScored(int points)
+void UGameRule::BroadcastGameRuleValue(int points)
 {
-	OnPointsScoredUpdated.Broadcast(points);
+	OnGameRuleValueUpdated.Broadcast(points);
 }
 
 

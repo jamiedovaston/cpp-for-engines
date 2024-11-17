@@ -44,7 +44,7 @@ protected:
 	UFUNCTION()
 	void Handle_GameRuleCompleted();
 	UFUNCTION()
-	void Handle_GameRulePointsScored(AController* scorer, int points);
+	void Handle_GameRuleValueChanged(AController* scorer, int points);
 
 	virtual void HandleMatchIsWaitingToStart() override;
 	virtual void HandleMatchHasStarted() override;

@@ -39,7 +39,7 @@ void AGM_FPS::Handle_GameRuleCompleted()
 	HandleMatchHasEnded();
 }
 
-void AGM_FPS::Handle_GameRulePointsScored(AController* scorer, int points)
+void AGM_FPS::Handle_GameRuleValueChanged(AController* scorer, int points)
 {
 	OnEnemiesRemainingSignature.Broadcast(points);
 }

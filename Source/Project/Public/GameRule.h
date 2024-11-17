@@ -5,7 +5,7 @@
 #include "GameRule.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameRuleCompleteSignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGameRulePointsScoredSignature, int, points);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGameRuleValueUpdatedSignature, int, points);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PROJECT_API UGameRule : public UActorComponent
@@ -16,12 +16,12 @@ public:
 	UGameRule();
 
 	FGameRuleCompleteSignature OnComplete;
-	static inline FGameRulePointsScoredSignature OnPointsScoredUpdated;
+	static inline FGameRuleValueUpdatedSignature OnGameRuleValueUpdated;
 	
 	UFUNCTION()
 	virtual void Init();
 
 protected:
 	void BroadcastComplete();
-	void BroadcastPointsScored(int points);
+	void BroadcastGameRuleValue(int points);
 };

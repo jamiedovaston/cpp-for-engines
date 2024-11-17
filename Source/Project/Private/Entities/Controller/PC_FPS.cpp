@@ -167,7 +167,7 @@ void APC_FPS::OnPossess(APawn* InPawn)
 		UE_LOG(LogTemp, Display, TEXT("Pawn possessed! ----------------------------------------------------------------------"));
 		pawn->OnHealthChangePercentage.AddUniqueDynamic(this, &APC_FPS::Handle_HealthChangePercentage);
 		pawn->_WeaponRef.Get()->OnAmmoChanged.AddUniqueDynamic(this, &APC_FPS::Handle_AmmoChangePercentage);
-		UGameRule_Targets::OnPointsScoredUpdated.AddUniqueDynamic(this, &APC_FPS::Handle_EnemiesRemainingChanged);
+		UGameRule_Targets::OnGameRuleValueUpdated.AddUniqueDynamic(this, &APC_FPS::Handle_EnemiesRemainingChanged);
 		pawn->Handle_OnPossessed();
 	}
 }

@@ -9,8 +9,6 @@ void UWidget_HUD::NativeConstruct()
 	Super::NativeConstruct();
  
 	if(HealthBar) { HealthBar->SetPercent(0.f); }
- 
-	if(ScoreText) { ScoreText->SetText(FText::FromString("Score: 0")); }
 
 	if(AmmoBar) { AmmoBar->SetPercent(0.f); }
 }
@@ -31,7 +29,7 @@ void UWidget_HUD::UpdateScore(int newScore)
 	{
 		ScoreText->SetText(
 		   FText::FromString(
-			  FString::Printf(TEXT("Score: %d"), newScore)
+			  FString::Printf(TEXT("Enemies Remaining: %d"), newScore)
 		   )
 		);
 	}
