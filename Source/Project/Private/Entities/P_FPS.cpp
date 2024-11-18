@@ -1,10 +1,10 @@
 ﻿#include "Entities/P_FPS.h"
-
-#include "HealthComponent.h"
-#include "Weapon_Base.h"
+#include "Components/HealthComponent.h"
+#include "Weapons/Weapon_Base.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
+#include "Components/TimelineComponent.h"
+#include "Curves/CurveFloat.h"
 
 AP_FPS::AP_FPS()
 {
@@ -14,24 +14,37 @@ AP_FPS::AP_FPS()
 	_Camera->SetupAttachment(RootComponent);
 
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
-	
+
 	_WeaponAttachPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Attach"));
 	_WeaponAttachPoint->SetupAttachment(_Camera);
+
+	DefaultFOV = 90.0f;
+	SprintFOV = 110.0f;
+
+	FOVTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("FOVTimeline"));
+	FOVTimeline->SetPlayRate(3.0f);
 }
 
 void AP_FPS::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	_Camera->SetFieldOfView(DefaultFOV);
 
-	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthDamaged);
-	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::AP_FPS::Handle_HealthDead);
-	_Health->OnHealthChangePercentage.AddUniqueDynamic(this, &AP_FPS::Handle_HealthChangePercentage);
-	
-	GetCharacterMovement()->MaxWalkSpeed = _WalkSpeed;
-	_Camera->SetupAttachment(RootComponent);
-	_Camera->SetFieldOfView(90);
-	
-	if(_DefaultWeapon)
+	// Check if FOVCurve is valid
+	if (FOVCurve)
+	{
+		FOnTimelineFloat ProgressFunction;
+		ProgressFunction.BindUFunction(this, FName("UpdateFOV"));
+		FOVTimeline->AddInterpFloat(FOVCurve, ProgressFunction);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FOVCurve is not assigned in the Editor!"));
+	}
+
+	// Initialize Weapon
+	if (_DefaultWeapon)
 	{
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = this;
@@ -41,6 +54,7 @@ void AP_FPS::BeginPlay()
 		_WeaponRef->Initialise(this, _Camera);
 	}
 }
+
 
 void AP_FPS::Input_FirePressed_Implementation()
 {
@@ -81,14 +95,22 @@ void AP_FPS::Input_CrouchReleased_Implementation()
 void AP_FPS::Input_SprintPressed_Implementation()
 {
 	GetCharacterMovement()->MaxWalkSpeed = _RunSpeed;
-	_Camera->SetFieldOfView(110);
+
+	if (FOVTimeline)
+	{
+		FOVTimeline->PlayFromStart();
+	}
 }
 
 void AP_FPS::Input_SprintReleased_Implementation()
 {
 	GetCharacterMovement()->MaxWalkSpeed = _WalkSpeed;
-	_Camera->SetFieldOfView(90);
-}	
+
+	if (FOVTimeline)
+	{
+		FOVTimeline->ReverseFromEnd();
+	}
+}
 
 void AP_FPS::Input_Look_Implementation(FVector2D value)
 {
@@ -111,6 +133,11 @@ UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 void AP_FPS::Handle_HealthChangePercentage(float inPercent)
 {
 	OnHealthChangePercentage.Broadcast(inPercent);
+}
+
+void AP_FPS::UpdateFOV(float Value)
+{
+	_Camera->SetFieldOfView(FMath::Lerp(DefaultFOV, SprintFOV, Value));
 }
 
 void AP_FPS::Handle_OnPossessed()

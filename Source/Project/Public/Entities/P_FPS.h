@@ -8,6 +8,8 @@
 class UHealthComponent;
 class UCameraComponent;
 class AWeapon_Base;
+class UTimelineComponent;
+class UCurveFloat;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChangedPercentageSignature, float, InPercent);
 
@@ -15,7 +17,7 @@ UCLASS(Abstract)
 class PROJECT_API AP_FPS : public ACharacter, public IInputable
 {
 	GENERATED_BODY()
-	
+
 public:
 	AP_FPS();
 
@@ -36,7 +38,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FHealthChangedPercentageSignature OnHealthChangePercentage;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<AWeapon_Base> _WeaponRef;
 
@@ -44,16 +46,20 @@ public:
 	void Handle_OnPossessed();
 
     virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FOV")
+	UCurveFloat* FOVCurve;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UCameraComponent> _Camera;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UHealthComponent> _Health;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _WalkSpeed = 600.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -63,13 +69,23 @@ protected:
 	TObjectPtr<USceneComponent> _WeaponAttachPoint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UBehaviorTree> _BehaviorTree;
 
 private:
+	// Timeline and curve to control FOV
+	UPROPERTY()
+	UTimelineComponent* FOVTimeline;
+	
+	float DefaultFOV;
+	float SprintFOV;
+
 	UFUNCTION()
-	virtual void Handle_HealthChangePercentage(float inPercent);
+	void UpdateFOV(float Value);
+
+	UFUNCTION()
+	void Handle_HealthChangePercentage(float inPercent);
 	UFUNCTION()
 	void Handle_HealthDead(AController* causer);
 	UFUNCTION()

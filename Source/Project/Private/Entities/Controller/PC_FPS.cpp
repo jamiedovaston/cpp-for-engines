@@ -2,13 +2,13 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "GameRule_Targets.h"
+#include "MANAGERS/GameRules/Rules/GameRule_Targets.h"
 #include "Interfaces/Inputable/Inputable.h"
 #include "Entities/P_FPS.h"
-#include "Weapon_Base.h"
+#include "Weapons/Weapon_Base.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-#include "Widget_HUD.h"
+#include "Widgets/Widget_HUD.h"
 #include "Blueprint/UserWidget.h"
 
 void APC_FPS::SetupInputComponent()
