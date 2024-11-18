@@ -45,8 +45,7 @@ protected:
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> _Root;
- 
-    
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UArrowComponent> _Muzzle;
 	

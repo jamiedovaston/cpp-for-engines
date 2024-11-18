@@ -23,7 +23,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup")
-	TObjectPtr<USkeletalMeshComponent> Mesh;
+	TObjectPtr<USceneComponent> RootComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup")
+	TObjectPtr<USkeletalMeshComponent> Mesh; 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup")
 	TObjectPtr<USphereComponent> SphereCollision;
 
