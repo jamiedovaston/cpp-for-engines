@@ -2,6 +2,7 @@
 #include "Components/HealthComponent.h"
 #include "Weapons/Weapon_Base.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/TimelineComponent.h"
 #include "Curves/CurveFloat.h"

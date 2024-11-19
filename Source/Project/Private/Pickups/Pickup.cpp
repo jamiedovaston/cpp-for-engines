@@ -9,18 +9,15 @@ APickup::APickup()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	// Create and initialize the root component
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
-	RootComponent->SetupAttachment(RootComponent); // Attach root to itself (basic setup)
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	Root->SetupAttachment(RootComponent);
 
-	// Create and initialize the mesh component
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(RootComponent); // Attach mesh to root component
+	Mesh->SetupAttachment(Root); 
 
-	// Create and initialize the sphere collision component
 	SphereCollision = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollision"));
-	SphereCollision->SetupAttachment(Mesh); // Attach collision to mesh
-	SphereCollision->InitSphereRadius(100.0f); // Optional: Set the collision radius
+	SphereCollision->SetupAttachment(Mesh); 
+	SphereCollision->InitSphereRadius(20.0f); 
 }
 
 void APickup::BeginPlay()
@@ -37,4 +34,9 @@ void APickup::SetupMesh()
 		UE_LOG(LogTemp, Display, TEXT("=================================================================== Weapon Name: %s"), *DefaultWeapon->_WeaponName);
 		Mesh->SetSkeletalMeshAsset(DefaultWeapon->_Mesh->GetSkeletalMeshAsset());
 	}
+}
+
+TSubclassOf<AWeapon_Base> APickup::GetWeapon()
+{
+	return _WeaponReference;
 }

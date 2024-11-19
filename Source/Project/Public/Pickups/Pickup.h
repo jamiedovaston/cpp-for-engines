@@ -16,18 +16,19 @@ class PROJECT_API APickup : public AActor
 public:
 	APickup();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
-	TSubclassOf<AWeapon_Base> _WeaponReference;
-
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	TSubclassOf<AWeapon_Base> _WeaponReference;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup")
-	TObjectPtr<USceneComponent> RootComponent;
+	TObjectPtr<USceneComponent> Root;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup")
 	TObjectPtr<USkeletalMeshComponent> Mesh; 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup")
 	TObjectPtr<USphereComponent> SphereCollision;
 
 	void SetupMesh();
+public:
+	TSubclassOf<AWeapon_Base> GetWeapon();
 };

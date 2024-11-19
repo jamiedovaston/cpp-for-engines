@@ -67,6 +67,7 @@ protected:
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> _WeaponAttachPoint;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
 
