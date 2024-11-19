@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Pickups/Pickup.h"
 #include "PC_FPS.generated.h"
 
 class UWidget_HUD;
@@ -31,6 +32,9 @@ protected: // INPUT
 	
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _FireAction;
+	
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _ReloadAction;
 
 	virtual void SetupInputComponent() override;
 
@@ -49,7 +53,11 @@ protected: // INPUT
 	
 	void FirePressed();
 	void FireReleased();
+	
+	void ReloadPressed();
 
+	UFUNCTION()
+	void Handle_HoveredWeaponPickup(FString CurrentHoveredPickup);
 	virtual void OnPossess(APawn* InPawn) override;
 	
 protected: // UI

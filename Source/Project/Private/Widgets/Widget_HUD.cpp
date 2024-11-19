@@ -2,7 +2,8 @@
 
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
- 
+#include "Pickups/Pickup.h"
+
 void UWidget_HUD::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -31,5 +32,22 @@ void UWidget_HUD::UpdateScore(int newScore)
 			  FString::Printf(TEXT("Enemies Remaining: %d"), newScore)
 		   )
 		);
+	}
+}
+
+void UWidget_HUD::UpdateWeaponHoverMenu(FString CurrentHoveredPickupName)
+{
+	if(!CurrentHoveredPickupName.IsEmpty())
+	{
+		UE_LOG(LogTemp, Display, TEXT("SHOWING TEXT"));
+		WeaponPickupText->SetVisibility(ESlateVisibility::Visible);
+		
+		UE_LOG(LogTemp, Display, TEXT("UPDATED TEXT"));
+    	WeaponPickupText->SetText(FText::FromString(CurrentHoveredPickupName));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("HIDDEN TEXT"));
+		WeaponPickupText->SetVisibility(ESlateVisibility::Hidden);
 	}
 }

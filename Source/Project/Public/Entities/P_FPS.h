@@ -10,8 +10,10 @@ class UCameraComponent;
 class AWeapon_Base;
 class UTimelineComponent;
 class UCurveFloat;
+class APickup;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChangedPercentageSignature, float, InPercent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCurrentWeaponPickupUpdatedSignature, FString, CurrentHoveredPickupText);
 
 UCLASS(Abstract)
 class PROJECT_API AP_FPS : public ACharacter, public IInputable
@@ -25,6 +27,7 @@ public:
 	
 	virtual void Input_FirePressed_Implementation() override;
 	virtual void Input_FireReleased_Implementation() override;
+	virtual void Input_ReloadPressed_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
 	virtual void Input_JumpReleased_Implementation() override;
 	virtual void Input_CrouchPressed_Implementation() override;
@@ -38,12 +41,16 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FHealthChangedPercentageSignature OnHealthChangePercentage;
+	
+	UPROPERTY(BlueprintAssignable)
+	FCurrentWeaponPickupUpdatedSignature OnHoveredWeaponPickupUpdated;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<AWeapon_Base> _WeaponRef;
 
 	UFUNCTION()
 	void Handle_OnPossessed();
+	void Handle_Recoil(FVector2D recoil);
 
     virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
 	
@@ -78,6 +85,8 @@ private:
 	// Timeline and curve to control FOV
 	UPROPERTY()
 	UTimelineComponent* FOVTimeline;
+
+	TArray<TObjectPtr<APickup>> CurrentPickupsHovering;
 	
 	float DefaultFOV;
 	float SprintFOV;
@@ -91,4 +100,9 @@ private:
 	void Handle_HealthDead(AController* causer);
 	UFUNCTION()
 	void Handle_HealthDamaged(float currentHealth, float maxHealth, float change);
+
+	UFUNCTION()
+	void Handle_ComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	UFUNCTION()
+	void Handle_ComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };

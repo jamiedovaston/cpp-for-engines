@@ -6,6 +6,8 @@
 
 class UCameraComponent;
 class UArrowComponent;
+class UNiagaraSystem;
+class AP_FPS;
  
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWeaponFireSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAmmoChangedSignature, float, inPercent);
@@ -14,7 +16,6 @@ UCLASS(Abstract)
 class PROJECT_API AWeapon_Base : public AActor
 {
 	GENERATED_BODY()
- 
 public:
 	AWeapon_Base();
  
@@ -26,12 +27,13 @@ public:
     
 	void StartFire();
 	void StopFire();
+	void HandleReload();
 
 	static void SingleLineTraceHitResult(FHitResult& OutHit, const UObject* WorldContextObject,
 		const FVector Start, const FVector End, const TArray<AActor*>& ActorsToIgnore);
 	
 	UFUNCTION()
-	virtual void Initialise(AActor* _Player, UCameraComponent* _Camera);
+	virtual void Initialise(AP_FPS* _Player, UCameraComponent* _Camera);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString _WeaponName;
@@ -40,6 +42,12 @@ public:
 	TObjectPtr<USkeletalMeshComponent> _Mesh;
     
 protected:
+	UPROPERTY()
+	AP_FPS* ControllingPlayer;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UNiagaraSystem* _MuzzleFlash;
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UCameraComponent> _Camera;
 	
@@ -61,11 +69,13 @@ protected:
 	float _ReloadDelay;
 	FTimerHandle _ReloadDelayTimer;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _Recoil;
+	
 	bool CanShoot;
  
 	UFUNCTION()
 	virtual void Fire();
-	
 	UFUNCTION()
 	void Reload();
 };

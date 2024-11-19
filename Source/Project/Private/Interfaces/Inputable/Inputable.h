@@ -38,6 +38,9 @@ public:
 	void Input_FirePressed();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_FireReleased();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_ReloadPressed();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_SprintPressed();

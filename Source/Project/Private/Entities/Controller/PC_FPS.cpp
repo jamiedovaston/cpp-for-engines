@@ -32,6 +32,8 @@ void APC_FPS::SetupInputComponent()
 		
 		EIP->BindAction(_FireAction, ETriggerEvent::Started, this, &APC_FPS::FirePressed);
 		EIP->BindAction(_FireAction, ETriggerEvent::Completed, this, &APC_FPS::FireReleased);
+		
+		EIP->BindAction(_ReloadAction, ETriggerEvent::Started, this, &APC_FPS::ReloadPressed);
 	}
 }
 
@@ -149,6 +151,17 @@ void APC_FPS::FireReleased()
 	}
 }
 
+void APC_FPS::ReloadPressed()
+{
+	if(APawn* currentPawn = GetPawn())
+	{
+		if(UKismetSystemLibrary::DoesImplementInterface(currentPawn, UInputable::StaticClass()))
+		{
+			IInputable::Execute_Input_ReloadPressed(currentPawn);
+		}
+	}
+}
+
 void APC_FPS::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -166,6 +179,7 @@ void APC_FPS::OnPossess(APawn* InPawn)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Pawn possessed! ----------------------------------------------------------------------"));
 		pawn->OnHealthChangePercentage.AddUniqueDynamic(this, &APC_FPS::Handle_HealthChangePercentage);
+		pawn->OnHoveredWeaponPickupUpdated.AddUniqueDynamic(this, &APC_FPS::Handle_HoveredWeaponPickup);
 		pawn->_WeaponRef.Get()->OnAmmoChanged.AddUniqueDynamic(this, &APC_FPS::Handle_AmmoChangePercentage);
 		UGameRule_Targets::OnGameRuleValueUpdated.AddUniqueDynamic(this, &APC_FPS::Handle_EnemiesRemainingChanged);
 		pawn->Handle_OnPossessed();
@@ -191,6 +205,11 @@ void APC_FPS::BeginPlay()
 void APC_FPS::Handle_HealthChangePercentage(float InPercent)
 {
 	_HUDWidget->UpdateHealth(InPercent);
+}
+
+void APC_FPS::Handle_HoveredWeaponPickup(FString CurrentHoveredPickup)
+{
+	_HUDWidget->UpdateWeaponHoverMenu(CurrentHoveredPickup);
 }
 
 void APC_FPS::Handle_AmmoChangePercentage(float InPercent)

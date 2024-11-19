@@ -3,13 +3,14 @@
 #include "Components/ArrowComponent.h"
 #include "Weapons/Projectile/Projectile.h"
 #include "Camera/CameraComponent.h"
+#include "Entities/P_FPS.h"
 #include "Kismet/KismetMathLibrary.h"
 
-void AWeapon_Projectile::Initialise(AActor* _Player, UCameraComponent* _Camera)
+void AWeapon_Projectile::Initialise(AP_FPS* _Player, UCameraComponent* _Camera)
 {
 	Super::Initialise(_Player, _Camera);
 	
-	ActorsToIgnore.Add(_Player);
+	ActorsToIgnore.Add(Cast<AActor>(_Player));
 }
 
 void AWeapon_Projectile::Fire()

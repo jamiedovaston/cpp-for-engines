@@ -17,7 +17,7 @@ APickup::APickup()
 
 	SphereCollision = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollision"));
 	SphereCollision->SetupAttachment(Mesh); 
-	SphereCollision->InitSphereRadius(20.0f); 
+	SphereCollision->InitSphereRadius(100.0f); 
 }
 
 void APickup::BeginPlay()

@@ -13,8 +13,8 @@ AProjectile::AProjectile()
  
 	_ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	_ProjectileMovement->UpdatedComponent = _Collider;
-	_ProjectileMovement->InitialSpeed = 3000.f;
-	_ProjectileMovement->MaxSpeed = 3000.f;
+	_ProjectileMovement->InitialSpeed = 3000.0f;
+	_ProjectileMovement->MaxSpeed = 3000.0f;
 	_ProjectileMovement->bRotationFollowsVelocity = true;
 	_ProjectileMovement->bShouldBounce = true;
 	

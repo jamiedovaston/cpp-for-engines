@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/TimelineComponent.h"
 #include "Curves/CurveFloat.h"
+#include "Pickups/Pickup.h"
 
 AP_FPS::AP_FPS()
 {
@@ -24,6 +25,9 @@ AP_FPS::AP_FPS()
 
 	FOVTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("FOVTimeline"));
 	FOVTimeline->SetPlayRate(3.0f);
+	
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddUniqueDynamic(this, &AP_FPS::Handle_ComponentBeginOverlap);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddUniqueDynamic(this, &AP_FPS::Handle_ComponentEndOverlap);
 }
 
 void AP_FPS::BeginPlay()
@@ -56,7 +60,6 @@ void AP_FPS::BeginPlay()
 	}
 }
 
-
 void AP_FPS::Input_FirePressed_Implementation()
 {
 	if(_WeaponRef)
@@ -70,6 +73,14 @@ void AP_FPS::Input_FireReleased_Implementation()
 	if(_WeaponRef)
 	{
 		_WeaponRef->StopFire();
+	}
+}
+
+void AP_FPS::Input_ReloadPressed_Implementation()
+{
+	if(_WeaponRef)
+	{
+		_WeaponRef->HandleReload();
 	}
 }
 
@@ -146,6 +157,12 @@ void AP_FPS::Handle_OnPossessed()
 	_Health->UpdateBar();
 }
 
+void AP_FPS::Handle_Recoil(FVector2D recoil)
+{
+	_Camera->AddLocalRotation(FRotator(recoil.Y, 0.0f, 0.0f));
+	AddActorWorldRotation(FRotator(0.0f, recoil.X, 0.0f));
+}
+
 void AP_FPS::Handle_HealthDead(AController* causer)
 {
 	
@@ -154,6 +171,41 @@ void AP_FPS::Handle_HealthDead(AController* causer)
 void AP_FPS::Handle_HealthDamaged(float currentHealth, float maxHealth, float change)
 {
 	
+}
+
+void AP_FPS::Handle_ComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	if((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
+	{
+		if(APickup* pickup = Cast<APickup>(OtherActor))
+		{
+			UE_LOG(LogTemp, Display, TEXT("PICKUP ENTERED"));
+			if(!CurrentPickupsHovering.Contains(pickup))
+				CurrentPickupsHovering.Add(pickup);
+
+			if(CurrentPickupsHovering[0])
+				OnHoveredWeaponPickupUpdated.Broadcast(CurrentPickupsHovering[0]->GetWeapon().GetDefaultObject()->_WeaponName);
+		}
+	}
+}
+
+void AP_FPS::Handle_ComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
+	{
+		UE_LOG(LogTemp, Display, TEXT("PICKUP EXITED"));
+		if(APickup* pickup = Cast<APickup>(OtherActor))
+		{
+			if(CurrentPickupsHovering.Contains(pickup))
+				CurrentPickupsHovering.Remove(pickup);
+			
+			if(CurrentPickupsHovering.IsEmpty())
+				OnHoveredWeaponPickupUpdated.Broadcast("");
+			else
+				OnHoveredWeaponPickupUpdated.Broadcast(CurrentPickupsHovering[0]->GetWeapon().GetDefaultObject()->_WeaponName);
+		}
+	}
 }
 
 UBehaviorTree* AP_FPS::GetBehaviorTree_Implementation()

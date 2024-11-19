@@ -2,12 +2,14 @@
 
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Entities/P_FPS.h"
 
-void AWeapon_Hitscan::Initialise(AActor* _Player, UCameraComponent* _Camera)
+
+void AWeapon_Hitscan::Initialise(AP_FPS* _Player, UCameraComponent* _Camera)
 {
 	Super::Initialise(_Player, _Camera);
 
-	ActorsToIgnore.Add(_Player);
+	ActorsToIgnore.Add(Cast<AActor>(_Player));
 }
 
 void AWeapon_Hitscan::Fire()
@@ -15,13 +17,13 @@ void AWeapon_Hitscan::Fire()
 	Super::Fire();
 	
 	if(!CanShoot) return;
-	
+
 	UWorld* const world = GetWorld();
 	if(world == nullptr) { return; }
  
 	FHitResult hit(ForceInit);
 	FVector start = _Camera->GetComponentLocation();
-	FVector end = start + (_Camera->GetForwardVector() * 1000);
+	FVector end = start + (_Camera->GetForwardVector() * 5000);
  
 	SingleLineTraceHitResult(hit, world, start,end, ActorsToIgnore);
 	
