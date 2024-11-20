@@ -15,7 +15,6 @@ class PROJECT_API UWidget_HUD : public UUserWidget
  
 public:
 	virtual void NativeConstruct() override;
-	
 	UFUNCTION()
 	void UpdateHealth(float newHealthRatio);
 	UFUNCTION()

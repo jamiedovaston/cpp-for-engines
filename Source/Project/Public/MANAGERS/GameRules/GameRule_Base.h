@@ -17,6 +17,9 @@ public:
 
 	FGameRuleCompleteSignature OnComplete;
 	static inline FGameRuleValueUpdatedSignature OnGameRuleValueUpdated;
+
+	UPROPERTY()
+	int GameRulePoints;
 	
 	UFUNCTION()
 	virtual void Init();

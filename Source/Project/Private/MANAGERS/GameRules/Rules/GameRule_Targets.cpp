@@ -21,7 +21,9 @@ void UGameRule_Targets::Handle_TargetRegistered(UTargetComponent* target)
 	_Targets.Add(target);
 	target->OnDestroyed.AddUniqueDynamic(this, &UGameRule_Targets::Handle_TargetDestroyed);
 	_AmountRemaining++;
-	BroadcastGameRuleValue(_AmountRemaining);
+	GameRulePoints = _AmountRemaining;
+	BroadcastGameRuleValue(GameRulePoints);
+	UE_LOG(LogTemp,Warning,TEXT("Registered Target"));
 }
 
 
@@ -29,8 +31,10 @@ void UGameRule_Targets::Handle_TargetDestroyed(UTargetComponent* target, AContro
 {
 	_Targets.Remove(target);
 	_AmountRemaining--;
-	BroadcastGameRuleValue(_AmountRemaining);
-	UE_LOG(LogTemp, Display, TEXT("Destroyed!"));
+	GameRulePoints = _AmountRemaining;
+	BroadcastGameRuleValue(GameRulePoints);
+	UE_LOG(LogTemp, Display, TEXT("Destroyed!"));	
+
 
 	if(_AmountRemaining == 0)
 	{

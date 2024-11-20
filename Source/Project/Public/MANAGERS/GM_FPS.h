@@ -38,6 +38,7 @@ protected:
 	TArray<TObjectPtr<AController>> _PlayerControllers;
 	
 	int _GameRulesLeft;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<TObjectPtr<UGameRule_Base>> _GameRuleManagers;
  

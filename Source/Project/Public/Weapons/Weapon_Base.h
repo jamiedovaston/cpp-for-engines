@@ -11,6 +11,8 @@ class AP_FPS;
  
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWeaponFireSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAmmoChangedSignature, float, inPercent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FReloadActiveSignature, bool, active);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FReloadTimerSignature, float, Time, float, ReloadTime);
 
 UCLASS(Abstract)
 class PROJECT_API AWeapon_Base : public AActor
@@ -24,6 +26,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FAmmoChangedSignature OnAmmoChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FReloadTimerSignature OnReloadTimer;
+
+	UPROPERTY(BlueprintAssignable)
+	FReloadActiveSignature OnReloadActive;
     
 	void StartFire();
 	void StopFire();
@@ -67,7 +75,8 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _ReloadDelay;
-	FTimerHandle _ReloadDelayTimer;
+	FTimerHandle _ReloadUpdateTimer;
+	float _ReloadElapsedTime;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _Recoil;
@@ -76,6 +85,8 @@ protected:
  
 	UFUNCTION()
 	virtual void Fire();
+	UFUNCTION()
+	void ReloadUpdate();
 	UFUNCTION()
 	void Reload();
 };

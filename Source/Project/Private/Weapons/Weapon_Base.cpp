@@ -39,7 +39,9 @@ void AWeapon_Base::StopFire()
 void AWeapon_Base::HandleReload()
 {
 	CanShoot = false;
-	GetWorld()->GetTimerManager().SetTimer(_ReloadDelayTimer, this, &AWeapon_Base::Reload, _ReloadDelay, false);
+	OnReloadActive.Broadcast(true);
+	_ReloadElapsedTime = 0;
+	GetWorld()->GetTimerManager().SetTimer(_ReloadUpdateTimer, this, &AWeapon_Base::ReloadUpdate, .1f, true);		
 }
 
 void AWeapon_Base::SingleLineTraceHitResult(FHitResult& OutHit, const UObject* WorldContextObject, const FVector Start, const FVector End, const TArray<AActor*>& ActorsToIgnore)
@@ -89,8 +91,24 @@ void AWeapon_Base::Fire()
 	}
 }
 
+void AWeapon_Base::ReloadUpdate()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Elapsed time: %f"), GetWorldTimerManager().GetTimerElapsed(_ReloadUpdateTimer));
+	_ReloadElapsedTime += GetWorldTimerManager().GetTimerElapsed(_ReloadUpdateTimer);
+	if(_ReloadElapsedTime < _ReloadDelay)
+	{
+		OnReloadTimer.Broadcast(_ReloadElapsedTime, _ReloadDelay);
+	}
+	else
+	{
+		GetWorldTimerManager().ClearTimer(_ReloadUpdateTimer);
+		Reload();
+	}
+}
+
 void AWeapon_Base::Reload()
 {
+	OnReloadActive.Broadcast(false);
 	_CurrentAmmo = _MaxAmmoCount;
 	OnAmmoChanged.Broadcast((float)_CurrentAmmo / (float)_MaxAmmoCount);
 	CanShoot = true;

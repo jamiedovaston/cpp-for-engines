@@ -181,7 +181,6 @@ void APC_FPS::OnPossess(APawn* InPawn)
 		pawn->OnHealthChangePercentage.AddUniqueDynamic(this, &APC_FPS::Handle_HealthChangePercentage);
 		pawn->OnHoveredWeaponPickupUpdated.AddUniqueDynamic(this, &APC_FPS::Handle_HoveredWeaponPickup);
 		pawn->_WeaponRef.Get()->OnAmmoChanged.AddUniqueDynamic(this, &APC_FPS::Handle_AmmoChangePercentage);
-		UGameRule_Targets::OnGameRuleValueUpdated.AddUniqueDynamic(this, &APC_FPS::Handle_EnemiesRemainingChanged);
 		pawn->Handle_OnPossessed();
 	}
 }
@@ -194,7 +193,8 @@ void APC_FPS::Handle_EnemiesRemainingChanged(int _remaining)
 void APC_FPS::BeginPlay()
 {
 	Super::BeginPlay();
- 
+	UGameRule_Targets::OnGameRuleValueUpdated.AddUniqueDynamic(this, &APC_FPS::Handle_EnemiesRemainingChanged);
+	
 	if(_HUDWidgetClass)
 	{
 		_HUDWidget = CreateWidget<UWidget_HUD, APC_FPS*>( this, _HUDWidgetClass.Get());

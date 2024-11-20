@@ -2,6 +2,9 @@
 
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
+#include "MANAGERS/GM_FPS.h"
+#include "MANAGERS/GameRules/GameRule_Base.h"
 #include "Pickups/Pickup.h"
 
 void UWidget_HUD::NativeConstruct()
@@ -12,7 +15,7 @@ void UWidget_HUD::NativeConstruct()
 
 	if(AmmoBar) { AmmoBar->SetPercent(0.f); }
 }
- 
+
 void UWidget_HUD::UpdateHealth(float newHealthRatio)
 {
 	if(HealthBar) { HealthBar->SetPercent(newHealthRatio); }
@@ -27,6 +30,8 @@ void UWidget_HUD::UpdateScore(int newScore)
 {
 	if(ScoreText)
 	{
+		UE_LOG(LogTemp,Warning,TEXT("Score updated!"));
+		
 		ScoreText->SetText(
 		   FText::FromString(
 			  FString::Printf(TEXT("Enemies Remaining: %d"), newScore)
