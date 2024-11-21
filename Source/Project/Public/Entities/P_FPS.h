@@ -34,6 +34,8 @@ public:
 	virtual void Input_CrouchReleased_Implementation() override;
 	virtual void Input_SprintPressed_Implementation() override;
 	virtual void Input_SprintReleased_Implementation() override;
+	virtual void Input_InteractPressed_Implementation() override;
+	virtual void Input_InteractReleased_Implementation() override;
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
 

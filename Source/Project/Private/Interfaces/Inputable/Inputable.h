@@ -43,6 +43,11 @@ public:
 	void Input_ReloadPressed();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_InteractPressed();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_InteractReleased();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_SprintPressed();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_SprintReleased();

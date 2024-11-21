@@ -124,6 +124,38 @@ void AP_FPS::Input_SprintReleased_Implementation()
 	}
 }
 
+void AP_FPS::Input_InteractPressed_Implementation()
+{
+	if(CurrentPickupsHovering.Num() > 0 && IsValid(CurrentPickupsHovering[0]))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PICKUP PRESSED!"));
+		if(_WeaponRef != nullptr)
+     	{
+     		_WeaponRef->Destroy();
+     	}
+     	
+     	FActorSpawnParameters spawnParams;
+     	spawnParams.Owner = this;
+     	spawnParams.Instigator = this;
+     	_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(CurrentPickupsHovering[0]->GetWeapon(), _WeaponAttachPoint->GetComponentTransform(), spawnParams);
+     	
+		if (IsValid(_WeaponRef))
+		{
+			_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+			_WeaponRef->Initialise(this, _Camera);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No valid pickup in CurrentPickupsHovering array!"));
+	}
+}
+
+void AP_FPS::Input_InteractReleased_Implementation()
+{
+	
+}
+
 void AP_FPS::Input_Look_Implementation(FVector2D value)
 {
 	AddActorWorldRotation(FRotator(0.0f, value.X, 0.0f));
@@ -180,7 +212,6 @@ void AP_FPS::Handle_ComponentBeginOverlap(UPrimitiveComponent* OverlappedCompone
 	{
 		if(APickup* pickup = Cast<APickup>(OtherActor))
 		{
-			UE_LOG(LogTemp, Display, TEXT("PICKUP ENTERED"));
 			if(!CurrentPickupsHovering.Contains(pickup))
 				CurrentPickupsHovering.Add(pickup);
 
@@ -194,7 +225,6 @@ void AP_FPS::Handle_ComponentEndOverlap(UPrimitiveComponent* OverlappedComponent
 {
 	if((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
-		UE_LOG(LogTemp, Display, TEXT("PICKUP EXITED"));
 		if(APickup* pickup = Cast<APickup>(OtherActor))
 		{
 			if(CurrentPickupsHovering.Contains(pickup))

@@ -35,6 +35,9 @@ protected: // INPUT
 	
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> _ReloadAction;
+	
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> _InteractAction;
 
 	virtual void SetupInputComponent() override;
 
@@ -55,6 +58,9 @@ protected: // INPUT
 	void FireReleased();
 	
 	void ReloadPressed();
+	
+	void InteractPressed();
+	void InteractReleased();
 
 	UFUNCTION()
 	void Handle_HoveredWeaponPickup(FString CurrentHoveredPickup);
