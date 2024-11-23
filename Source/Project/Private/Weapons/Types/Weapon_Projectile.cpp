@@ -6,9 +6,9 @@
 #include "Entities/P_FPS.h"
 #include "Kismet/KismetMathLibrary.h"
 
-void AWeapon_Projectile::Initialise(AP_FPS* _Player, UCameraComponent* _Camera)
+void AWeapon_Projectile::Initialise(AP_FPS* _Player, UCameraComponent* _Camera, TSubclassOf<AWeapon_Base> _WeaponReference)
 {
-	Super::Initialise(_Player, _Camera);
+	Super::Initialise(_Player, _Camera, _WeaponReference);
 	
 	ActorsToIgnore.Add(Cast<AActor>(_Player));
 }

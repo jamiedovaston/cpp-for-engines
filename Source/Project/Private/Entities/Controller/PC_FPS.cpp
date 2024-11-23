@@ -205,7 +205,7 @@ void APC_FPS::OnPossess(APawn* InPawn)
 		UE_LOG(LogTemp, Display, TEXT("Pawn possessed! ----------------------------------------------------------------------"));
 		pawn->OnHealthChangePercentage.AddUniqueDynamic(this, &APC_FPS::Handle_HealthChangePercentage);
 		pawn->OnHoveredWeaponPickupUpdated.AddUniqueDynamic(this, &APC_FPS::Handle_HoveredWeaponPickup);
-		pawn->_WeaponRef.Get()->OnAmmoChanged.AddUniqueDynamic(this, &APC_FPS::Handle_AmmoChangePercentage);
+		pawn->OnWeaponEquipped.AddUniqueDynamic(this, &APC_FPS::Handle_WeaponEquipped);
 		pawn->Handle_OnPossessed();
 	}
 }
@@ -213,6 +213,15 @@ void APC_FPS::OnPossess(APawn* InPawn)
 void APC_FPS::Handle_EnemiesRemainingChanged(int _remaining)
 {
 	_HUDWidget->UpdateScore(_remaining);
+}
+
+void APC_FPS::Handle_WeaponEquipped(AWeapon_Base* _weapon)
+{
+	_weapon->OnAmmoChanged.AddUniqueDynamic(this, &APC_FPS::Handle_AmmoChangePercentage);
+	_weapon->OnReloadActive.AddUniqueDynamic(this, &APC_FPS::Handle_ReloadActive);
+	_weapon->OnReloadTimer.AddUniqueDynamic(this, &APC_FPS::Handle_ReloadTimer);
+	Handle_ReloadActive(false);
+	_HUDWidget->UpdateAmmo(1);
 }
 
 void APC_FPS::BeginPlay()
@@ -235,6 +244,16 @@ void APC_FPS::Handle_HealthChangePercentage(float InPercent)
 void APC_FPS::Handle_HoveredWeaponPickup(FString CurrentHoveredPickup)
 {
 	_HUDWidget->UpdateWeaponHoverMenu(CurrentHoveredPickup);
+}
+
+void APC_FPS::Handle_ReloadTimer(float inPercent)
+{
+	_HUDWidget->UpdateReloadBar(inPercent);
+}
+
+void APC_FPS::Handle_ReloadActive(bool _active)
+{
+	_HUDWidget->ActivateReloadBar(_active);
 }
 
 void APC_FPS::Handle_AmmoChangePercentage(float InPercent)

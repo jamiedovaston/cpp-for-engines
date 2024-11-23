@@ -25,7 +25,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _Damage;
  
-private:
+protected:
 	UFUNCTION()
-	void Handle_Hit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	virtual void Handle_Hit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

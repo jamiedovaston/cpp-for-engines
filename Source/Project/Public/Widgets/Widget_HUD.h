@@ -20,6 +20,10 @@ public:
 	UFUNCTION()
 	void UpdateAmmo(float newAmmoRatio);
 	UFUNCTION()
+	void UpdateReloadBar(float newReloadRaio);
+	UFUNCTION()
+	void ActivateReloadBar(bool _active);
+	UFUNCTION()
 	void UpdateScore(int newScore);
 	UFUNCTION()
 	void UpdateWeaponHoverMenu(FString CurrentHoveredPickup);
@@ -29,6 +33,8 @@ private:
 	TObjectPtr<UProgressBar> HealthBar;
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UProgressBar> AmmoBar;
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UProgressBar> ReloadBar;
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> ScoreText;
 	

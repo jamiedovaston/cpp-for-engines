@@ -27,6 +27,11 @@ void UTargetComponent::BeginPlay()
 	OnTargetRegistered.Broadcast(this);
 }
 
+void UTargetComponent::Highlight(bool active)
+{
+		
+}
+
 void UTargetComponent::Handle_HealthDead(AController* causer)
 {
 	OnDestroyed.Broadcast(this, causer, _PointsValue);

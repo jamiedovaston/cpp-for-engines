@@ -15,6 +15,7 @@ class PROJECT_API APickup : public AActor
 	
 public:
 	APickup();
+	void SetWeaponReference(TSubclassOf<AWeapon_Base> _Weapon);
 
 protected:
 	virtual void BeginPlay() override;

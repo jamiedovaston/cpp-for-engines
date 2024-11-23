@@ -78,6 +78,15 @@ protected: // UI
 	
 	UFUNCTION()
 	void Handle_EnemiesRemainingChanged(int _remaining);
+
+	UFUNCTION()
+	void Handle_WeaponEquipped(AWeapon_Base* _weapon);
+	
+	UFUNCTION()
+	void Handle_ReloadActive(bool _active);
+	
+	UFUNCTION()
+	void Handle_ReloadTimer(float inPercent);
 	
 	UFUNCTION()
 	void Handle_AmmoChangePercentage(float InPercent);

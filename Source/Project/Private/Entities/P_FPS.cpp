@@ -47,17 +47,6 @@ void AP_FPS::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("FOVCurve is not assigned in the Editor!"));
 	}
-
-	// Initialize Weapon
-	if (_DefaultWeapon)
-	{
-		FActorSpawnParameters spawnParams;
-		spawnParams.Owner = this;
-		spawnParams.Instigator = this;
-		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
-		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-		_WeaponRef->Initialise(this, _Camera);
-	}
 }
 
 void AP_FPS::Input_FirePressed_Implementation()
@@ -128,22 +117,9 @@ void AP_FPS::Input_InteractPressed_Implementation()
 {
 	if(CurrentPickupsHovering.Num() > 0 && IsValid(CurrentPickupsHovering[0]))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PICKUP PRESSED!"));
-		if(_WeaponRef != nullptr)
-     	{
-     		_WeaponRef->Destroy();
-     	}
-     	
-     	FActorSpawnParameters spawnParams;
-     	spawnParams.Owner = this;
-     	spawnParams.Instigator = this;
-     	_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(CurrentPickupsHovering[0]->GetWeapon(), _WeaponAttachPoint->GetComponentTransform(), spawnParams);
-     	
-		if (IsValid(_WeaponRef))
-		{
-			_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-			_WeaponRef->Initialise(this, _Camera);
-		}
+		DropWeapon();
+     	SetWeapon(CurrentPickupsHovering[0]->GetWeapon());
+		CurrentPickupsHovering[0].Get()->Destroy();
 	}
 	else
 	{
@@ -184,9 +160,52 @@ void AP_FPS::UpdateFOV(float Value)
 	_Camera->SetFieldOfView(FMath::Lerp(DefaultFOV, SprintFOV, Value));
 }
 
+void AP_FPS::SetWeapon(TSubclassOf<AWeapon_Base> _weapon)
+{
+	if(_WeaponRef != nullptr)
+	{
+		DropWeapon();
+	}
+
+	FActorSpawnParameters spawnParams;
+	spawnParams.Owner = this;
+	spawnParams.Instigator = this;
+	_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_weapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
+     	
+	if (IsValid(_WeaponRef))
+	{
+		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+		_WeaponRef->Initialise(this, _Camera, _weapon);
+	}
+	
+	OnWeaponEquipped.Broadcast(_WeaponRef);
+}
+
+void AP_FPS::DropWeapon()
+{
+	if(_WeaponRef)
+	{
+		FVector SpawnLocation = _Camera->GetComponentLocation() + _Camera->GetForwardVector() * 200.0f; // Adjust the distance as needed
+
+		AActor* Actor = GetWorld()->SpawnActor<APickup>(_Pickup, SpawnLocation, FRotator(0.0f, 0.0f, 0.0f));
+		if (APickup* Pickup = Cast<APickup>(Actor))
+		{
+			Pickup->SetWeaponReference(_WeaponRef->_WeaponActorReference);
+		}
+		
+		_WeaponRef->Destroy();
+		_WeaponRef = nullptr;
+	}
+}
+
 void AP_FPS::Handle_OnPossessed()
 {
 	_Health->UpdateBar();
+	
+	if (_DefaultWeapon)
+	{
+		SetWeapon(_DefaultWeapon);
+	}
 }
 
 void AP_FPS::Handle_Recoil(FVector2D recoil)

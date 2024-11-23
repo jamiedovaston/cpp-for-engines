@@ -41,7 +41,7 @@ void AWeapon_Base::HandleReload()
 	CanShoot = false;
 	OnReloadActive.Broadcast(true);
 	_ReloadElapsedTime = 0;
-	GetWorld()->GetTimerManager().SetTimer(_ReloadUpdateTimer, this, &AWeapon_Base::ReloadUpdate, .1f, true);		
+	GetWorld()->GetTimerManager().SetTimer(_ReloadUpdateTimer, this, &AWeapon_Base::ReloadUpdate,  _ReloadDelay / _MaxAmmoCount, true);		
 }
 
 void AWeapon_Base::SingleLineTraceHitResult(FHitResult& OutHit, const UObject* WorldContextObject, const FVector Start, const FVector End, const TArray<AActor*>& ActorsToIgnore)
@@ -51,11 +51,13 @@ void AWeapon_Base::SingleLineTraceHitResult(FHitResult& OutHit, const UObject* W
 	   true, FLinearColor::Red, FLinearColor::Green, 5);
 }
 
-void AWeapon_Base::Initialise(AP_FPS* _Player, UCameraComponent* camera)
+void AWeapon_Base::Initialise(AP_FPS* _Player, UCameraComponent* camera, TSubclassOf<AWeapon_Base> _WeaponReference)
 {
 	ControllingPlayer = _Player;
 	
 	_Camera = camera;
+
+	_WeaponActorReference = _WeaponReference;
 	
 	_CurrentAmmo = _MaxAmmoCount;
 	OnAmmoChanged.Broadcast(1.0f);
@@ -97,7 +99,7 @@ void AWeapon_Base::ReloadUpdate()
 	_ReloadElapsedTime += GetWorldTimerManager().GetTimerElapsed(_ReloadUpdateTimer);
 	if(_ReloadElapsedTime < _ReloadDelay)
 	{
-		OnReloadTimer.Broadcast(_ReloadElapsedTime, _ReloadDelay);
+		OnReloadTimer.Broadcast(_ReloadElapsedTime / _ReloadDelay);
 	}
 	else
 	{

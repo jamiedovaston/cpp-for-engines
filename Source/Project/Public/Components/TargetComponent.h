@@ -22,6 +22,8 @@ public:
 	
 	static inline FTargetRegisteredSignature OnTargetRegistered;
 	
+	void Highlight(bool active);
+	
 protected:
 	virtual void BeginPlay() override;
 

@@ -36,6 +36,12 @@ void APickup::SetupMesh()
 	}
 }
 
+void APickup::SetWeaponReference(TSubclassOf<AWeapon_Base> _Weapon)
+{
+	_WeaponReference = _Weapon;
+	SetupMesh();
+}
+
 TSubclassOf<AWeapon_Base> APickup::GetWeapon()
 {
 	return _WeaponReference;

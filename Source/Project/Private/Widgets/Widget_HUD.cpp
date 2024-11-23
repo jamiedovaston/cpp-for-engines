@@ -1,7 +1,9 @@
 #include "Widgets/Widget_HUD.h"
 
+#include "ISkeletonTreeItem.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MANAGERS/GM_FPS.h"
 #include "MANAGERS/GameRules/GameRule_Base.h"
@@ -24,6 +26,17 @@ void UWidget_HUD::UpdateHealth(float newHealthRatio)
 void UWidget_HUD::UpdateAmmo(float newAmmoRatio)
 {
 	if(AmmoBar) { AmmoBar->SetPercent(newAmmoRatio); }
+}
+
+void UWidget_HUD::UpdateReloadBar(float newReloadRaio)
+{
+	if(ReloadBar) { ReloadBar->SetPercent(newReloadRaio); }
+}
+
+void UWidget_HUD::ActivateReloadBar(bool _active)
+{
+	ReloadBar->SetPercent(0.0f);
+	ReloadBar->SetVisibility(_active ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
 
 void UWidget_HUD::UpdateScore(int newScore)

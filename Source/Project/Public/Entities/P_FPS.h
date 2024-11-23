@@ -14,6 +14,7 @@ class APickup;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthChangedPercentageSignature, float, InPercent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCurrentWeaponPickupUpdatedSignature, FString, CurrentHoveredPickupText);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWeaponEquippedSignature, AWeapon_Base*, Weapon);
 
 UCLASS(Abstract)
 class PROJECT_API AP_FPS : public ACharacter, public IInputable
@@ -47,6 +48,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FCurrentWeaponPickupUpdatedSignature OnHoveredWeaponPickupUpdated;
 
+	UPROPERTY(BlueprintAssignable)
+	FWeaponEquippedSignature OnWeaponEquipped;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<AWeapon_Base> _WeaponRef;
 
@@ -79,6 +83,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<APickup> _Pickup;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UBehaviorTree> _BehaviorTree;
@@ -95,6 +102,10 @@ private:
 
 	UFUNCTION()
 	void UpdateFOV(float Value);
+	UFUNCTION()
+	void SetWeapon(TSubclassOf<AWeapon_Base> _weapon);
+	UFUNCTION()
+	void DropWeapon();
 
 	UFUNCTION()
 	void Handle_HealthChangePercentage(float inPercent);

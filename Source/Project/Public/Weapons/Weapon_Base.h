@@ -12,7 +12,7 @@ class AP_FPS;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWeaponFireSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAmmoChangedSignature, float, inPercent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FReloadActiveSignature, bool, active);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FReloadTimerSignature, float, Time, float, ReloadTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FReloadTimerSignature, float, inPercent);
 
 UCLASS(Abstract)
 class PROJECT_API AWeapon_Base : public AActor
@@ -32,22 +32,25 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FReloadActiveSignature OnReloadActive;
-    
-	void StartFire();
-	void StopFire();
+
+	virtual void StartFire();
+	virtual void StopFire();
 	void HandleReload();
 
 	static void SingleLineTraceHitResult(FHitResult& OutHit, const UObject* WorldContextObject,
 		const FVector Start, const FVector End, const TArray<AActor*>& ActorsToIgnore);
 	
 	UFUNCTION()
-	virtual void Initialise(AP_FPS* _Player, UCameraComponent* _Camera);
+	virtual void Initialise(AP_FPS* _Player, UCameraComponent* _Camera, TSubclassOf<AWeapon_Base> _WeaponReference);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString _WeaponName;
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> _Mesh;
+
+	UPROPERTY()
+	TSubclassOf<AWeapon_Base> _WeaponActorReference;
     
 protected:
 	UPROPERTY()
