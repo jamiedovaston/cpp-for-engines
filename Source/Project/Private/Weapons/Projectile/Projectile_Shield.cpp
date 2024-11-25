@@ -2,6 +2,8 @@
 
 #include "Components/TargetComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 void AProjectile_Shield::Initialise(TArray<UTargetComponent*>* _highlighted)
 {
@@ -25,8 +27,20 @@ void AProjectile_Shield::Handle_Hit(UPrimitiveComponent* HitComp, AActor* OtherA
 	}
 }
 
-void AProjectile_Shield::Reflect(UTargetComponent* target)
+void AProjectile_Shield::Reflect(UTargetComponent* Target)
 {
-	// rotate towards target (ensure movement rotates too)
-}
+	if (!Target || !Target->GetOwner())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid target or target has no owner."));
+		return;
+	}
 
+	FVector TargetLocation = Target->GetOwner()->GetActorLocation();
+	FVector CurrentLocation = GetActorLocation();
+	FVector Direction = (TargetLocation - CurrentLocation).GetSafeNormal();
+	FRotator NewRotation = UKismetMathLibrary::MakeRotFromX(Direction);
+	
+	SetActorRotation(NewRotation);
+
+	_ProjectileMovement->Velocity = Direction * _ProjectileMovement->InitialSpeed;
+}

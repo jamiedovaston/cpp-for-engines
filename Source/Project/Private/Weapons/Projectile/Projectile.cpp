@@ -1,8 +1,9 @@
 ﻿#include "Weapons/Projectile/Projectile.h"
  
 #include "Components/SphereComponent.h"
-#include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/ProjectileMovementComponent.h"
  
 AProjectile::AProjectile()
 {

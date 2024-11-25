@@ -33,9 +33,8 @@ void UGameRule_Targets::Handle_TargetDestroyed(UTargetComponent* target, AContro
 	_AmountRemaining--;
 	GameRulePoints = _AmountRemaining;
 	BroadcastGameRuleValue(GameRulePoints);
-	UE_LOG(LogTemp, Display, TEXT("Destroyed!"));	
-
-
+	UE_LOG(LogTemp, Display, TEXT("Destroyed!")); 
+	
 	if(_AmountRemaining == 0)
 	{
 		BroadcastComplete();
